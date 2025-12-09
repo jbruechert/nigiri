@@ -627,6 +627,13 @@ struct booking_rule {
   string_idx_t booking_url_;
 };
 
+enum display {
+  k_unspecified = 0,
+  k_identified_by_both,
+  k_identified_by_route,
+  k_identified_by_trip,
+};
+
 }  // namespace nigiri
 
 template <>

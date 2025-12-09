@@ -297,16 +297,44 @@ trip_data read_trips(source_idx_t const src,
             cars_allowed = false;
           }
 
-          auto const display_name = [&]() -> std::string_view {
-            for (auto const str :
-                 {std::string_view{route_it->second->short_name_},
-                  std::string_view{route_it->second->long_name_},
-                  t.trip_short_name_->view()}) {
-              if (!str.empty()) {
-                return str;
-              }
+          auto const display_name = [&]() -> cista::raw::generic_string {
+            cista::raw::generic_string name;
+
+            switch (route_it->second->display_mode_) {
+              case k_unspecified:
+              case k_identified_by_both:
+                // optimization to skip format if not needed
+                if (!route_it->second->short_name_.empty() &&
+                    !t.trip_short_name_->empty()) {
+                  name.set_owning(fmt::format("{} {}",
+                                              route_it->second->short_name_,
+                                              t.trip_short_name_->view()));
+                } else if (!route_it->second->short_name_.empty()) {
+                  name.set_non_owning(
+                      std::string_view{route_it->second->short_name_});
+                } else if (!t.trip_short_name_->empty()) {
+                  name.set_non_owning(t.trip_short_name_->view());
+                } else {
+                  name.set_non_owning(
+                      std::string_view{route_it->second->long_name_});
+                }
+
+                break;
+              case k_identified_by_route:
+                if (!route_it->second->short_name_.empty()) {
+                  name.set_non_owning(
+                      std::string_view{route_it->second->short_name_});
+                } else {
+                  name.set_non_owning(
+                      std::string_view{route_it->second->long_name_});
+                }
+                break;
+              case k_identified_by_trip:
+                name.set_non_owning(t.trip_short_name_->view());
+                break;
             }
-            return "";
+
+            return name;
           }();
 
           auto x = loader::trip{src,

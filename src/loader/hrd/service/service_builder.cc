@@ -95,11 +95,13 @@ void service_builder::write_services(source_idx_t const src) {
               s.utc_times_.front().count(), to_idx(stops.back().eva_num_),
               s.utc_times_.back().count(), s.line_info(store_));
 
+          cista::raw::generic_string display_name;
+          display_name.set_non_owning(ref.display_name(tt_));
           auto const id = register_trip(
               tt_,
               trip{src,
                    std::string_view{trip_id_buf_.data(), trip_id_buf_.size()},
-                   "", "", ref.display_name(tt_), "", "",
+                   "", "", display_name, "", "",
                    direction_id_t::invalid(), route_id_idx_t::invalid(),
                    ref.origin_.dbg_, tt_});
           tt_.trip_stop_seq_numbers_.emplace_back(

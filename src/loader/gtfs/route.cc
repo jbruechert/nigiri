@@ -158,6 +158,7 @@ route_map_t read_routes(source_idx_t const src,
     utl::csv_col<utl::cstr, UTL_NAME("route_color")> route_color_;
     utl::csv_col<utl::cstr, UTL_NAME("route_text_color")> route_text_color_;
     utl::csv_col<utl::cstr, UTL_NAME("network_id")> network_id_;
+    utl::csv_col<std::uint16_t, UTL_NAME("display")> display_;
   };
 
   auto const progress_tracker = utl::get_active_progress_tracker();
@@ -213,7 +214,8 @@ route_map_t read_routes(source_idx_t const src,
                                   .network_ = r.network_id_->to_str(),
                                   .clasz_ = x.clasz_,
                                   .color_ = x.color_.color_,
-                                  .text_color_ = x.color_.text_color_}));
+                                  .text_color_ = x.color_.text_color_,
+                                  .display_mode_ = display(r.display_.val())}));
           }
         });
   return map;

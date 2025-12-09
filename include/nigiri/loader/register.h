@@ -145,7 +145,7 @@ struct trip {
        std::string_view id,
        std::string_view headsign,
        std::string_view short_name,
-       std::string_view display_name,
+       cista::raw::generic_string display_name,
        std::string_view vehicle_type_name,
        std::string_view vehicle_type_short_name,
        direction_id_t,

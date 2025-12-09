@@ -25,6 +25,7 @@ struct route {
   clasz clasz_;
   color_t color_;
   color_t text_color_;
+  display display_mode_;
 };
 
 using route_map_t = hash_map<std::string, std::unique_ptr<route>>;
