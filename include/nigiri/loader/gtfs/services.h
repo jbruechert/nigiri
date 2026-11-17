@@ -9,9 +9,14 @@
 
 namespace nigiri::loader::gtfs {
 
-using traffic_days_t = hash_map<std::string, std::unique_ptr<bitfield>>;
+struct traffic_days {
+  interval<date::sys_days> interval_;
+  std::unique_ptr<bitfield> service_;
+};
 
-traffic_days_t merge_traffic_days(
+using traffic_days_map_t = hash_map<std::string, traffic_days>;
+
+traffic_days_map_t merge_traffic_days(
     interval<date::sys_days> const& tt_interval,
     hash_map<std::string, calendar> const&,
     hash_map<std::string, std::vector<calendar_date>> const&,

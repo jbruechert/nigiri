@@ -220,7 +220,7 @@ trip_data read_trips(
     import_context& ctx,
     translator& i18n,
     route_map_t const& routes,
-    traffic_days_t const& services,
+    traffic_days_map_t const& services,
     shape_loader_state const& shape_states,
     std::string_view file_content,
     std::array<bool, kNumClasses> const& bikes_allowed_default,
@@ -370,9 +370,9 @@ trip_data read_trips(
         auto const gtfs_trp_idx = gtfs_trip_idx_t{ret.data_.size()};
 
         ret.data_.push_back(trip{
-            route_id, traffic_days_it->second.get(), blk, t.trip_id_->to_str(),
-            x.headsign_, trip_short_name, x.direction_, shape_idx, flags,
-            std::string{t.ticketing_trip_id->view()},
+            route_id, traffic_days_it->second.service_.get(), blk,
+            t.trip_id_->to_str(), x.headsign_, trip_short_name, x.direction_,
+            shape_idx, flags, std::string{t.ticketing_trip_id->view()},
             t.ticketing_type.val() == 1});
         ret.data_.back().trip_idx_ = register_trip(tt, ctx, x);
         ret.data_.back().clasz_ = trip_clasz;

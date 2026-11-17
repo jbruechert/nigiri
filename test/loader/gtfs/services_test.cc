@@ -50,8 +50,8 @@ TEST(gtfs, service_dates) {
   auto const we_traffic_days = bitfield{we_bit_str};
   auto const wd_traffic_days = bitfield{wd_bit_str};
 
-  EXPECT_EQ(we_traffic_days, *traffic_days["WE"]);
-  EXPECT_EQ(wd_traffic_days, *traffic_days["WD"]);
+  EXPECT_EQ(we_traffic_days, *traffic_days["WE"].service_);
+  EXPECT_EQ(wd_traffic_days, *traffic_days["WD"].service_);
 }
 
 TEST(gtfs, von_dates) {
@@ -64,12 +64,12 @@ TEST(gtfs, von_dates) {
 
   {
     auto const traffic_days = merge_traffic_days(i, calendar, dates);
-    EXPECT_TRUE(traffic_days.at("T0+ss#68")->none());
+    EXPECT_TRUE(traffic_days.at("T0+ss#68").service_->none());
   }
 
   {
     auto const traffic_days =
         merge_traffic_days(i, calendar, dates, parse_date(20240428));
-    EXPECT_TRUE(traffic_days.at("T0+ss#68")->any());
+    EXPECT_TRUE(traffic_days.at("T0+ss#68").service_->any());
   }
 }

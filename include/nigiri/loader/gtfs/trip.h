@@ -158,7 +158,7 @@ trip_data read_trips(
     import_context&,
     translator&,
     route_map_t const&,
-    traffic_days_t const&,
+    traffic_days_map_t const&,
     shape_loader_state const&,
     std::string_view file_content,
     std::array<bool, kNumClasses> const& bikes_allowed_default,

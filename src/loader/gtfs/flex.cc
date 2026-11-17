@@ -171,7 +171,7 @@ booking_rules_t parse_booking_rules(timetable& tt,
                                     import_context& ctx,
                                     translator& i18n,
                                     std::string_view file_content,
-                                    traffic_days_t const& traffic_days) {
+                                    traffic_days_map_t const& traffic_days) {
   using utl::csv_col;
 
   struct booking_rule_record {
@@ -245,7 +245,7 @@ booking_rules_t parse_booking_rules(timetable& tt,
               return booking_rule::real_time{};
             }
             prior_day.prior_notice_bitfield_ =
-                register_bitfield(tt, ctx, *bitfield_it->second);
+                register_bitfield(tt, ctx, *bitfield_it->second.service_);
           }
           return prior_day;
         }

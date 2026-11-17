@@ -36,7 +36,7 @@ booking_rules_t parse_booking_rules(timetable&,
                                     import_context&,
                                     translator&,
                                     std::string_view file_content,
-                                    traffic_days_t const&);
+                                    traffic_days_map_t const&);
 
 void expand_flex_trip(timetable&,
                       import_context&,

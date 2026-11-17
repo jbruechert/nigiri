@@ -274,7 +274,7 @@ hash_map<std::string, timeframe_group_idx_t> parse_timeframes(
     timetable& tt,
     std::string_view file_content,
     fares& f,
-    hash_map<std::string, std::unique_ptr<bitfield>> const& services) {
+    traffic_days_map_t const& services) {
   struct timeframe_record {
     utl::csv_col<utl::cstr, UTL_NAME("timeframe_group_id")> timeframe_group_id_;
     utl::csv_col<std::optional<utl::cstr>, UTL_NAME("start_time")> start_time_;
@@ -292,7 +292,7 @@ hash_map<std::string, timeframe_group_idx_t> parse_timeframes(
       return;
     }
 
-    auto const traffic_days = *service_it->second;
+    auto const traffic_days = *service_it->second.service_;
     auto const i = utl::get_or_create(m, r.timeframe_group_id_->view(), [&]() {
       auto const idx = timeframe_group_idx_t{f.timeframes_.size()};
       f.timeframes_.add_back_sized(0U);
@@ -576,7 +576,7 @@ hash_map<std::string, rider_category_idx_t> parse_rider_categories(
 void load_fares(timetable& tt,
                 import_context& ctx,
                 dir const& d,
-                traffic_days_t const& services,
+                traffic_days_map_t const& services,
                 route_map_t const& routes,
                 stops_map_t const& stops) {
   auto const load = [&](std::string_view file_name) -> file {
