@@ -16,6 +16,7 @@
 #include "nigiri/common/dial.h"
 #include "nigiri/constants.h"
 #include "nigiri/logging.h"
+#include "nigiri/loop_service_days.h"
 #include "nigiri/routing/dijkstra.h"
 #include "nigiri/types.h"
 

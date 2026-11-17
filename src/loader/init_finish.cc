@@ -12,6 +12,7 @@
 #include "nigiri/loader/import_context.h"
 #include "nigiri/loader/register.h"
 #include "nigiri/flex.h"
+#include "nigiri/loop_service_days.h"
 #include "nigiri/special_stations.h"
 #include "nigiri/timetable.h"
 
@@ -287,6 +288,15 @@ void finalize(timetable& tt,
   assign_stops_to_flex_areas(tt);
   assign_importance(tt);
   correct_color_contrast(tt);
+
+  // TODO proper config
+  bitvec src;
+  src.resize(tt.n_sources());
+  for (size_t i = 0; i < src.size(); i++) {
+    src.set(i, true);
+  }
+
+  loop_service_days(tt, src);
 
   log(log_lvl::info, "nigiri.loader.finalize",
       "{} locations ({}% of idx space used)", tt.n_locations(),
