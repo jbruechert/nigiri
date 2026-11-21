@@ -62,6 +62,32 @@ using bitset = cista::bitset<Size>;
 constexpr auto const kMaxDays = 512;
 using bitfield = bitset<kMaxDays>;
 
+struct bitfield_view {
+  bitfield_view(bitfield const& b) : start_(0), end_(b.size()), bitfield_(b) {}
+
+  bitfield_view subview(size_t pos, size_t count) const {
+    auto self = *this;
+    self.start_ = start_ + pos;
+    self.end_ = self.start_ + count;
+    cista::verify(self.start_ + count < size(),
+                  "subview can't end after current view");
+    cista::verify(self.start_ < self.end_,
+                  "bitfield_view can't have negative length");
+
+    return self;
+  }
+
+  inline size_t size() const { return end_ - start_; }
+
+  bool test(size_t offset) const {
+    cista::verify(start_ + offset < end_, "offset out of bounds");
+    return bitfield_.test(start_ + offset);
+  }
+
+  size_t start_, end_;
+  bitfield const& bitfield_;
+};
+
 using bitvec = cista::raw::bitvec;
 
 template <typename K = std::uint32_t>
